@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:expense_tracker/models/expense.dart' as expense;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -44,21 +47,39 @@ class _NewExpenseState extends State<NewExpense> {
         !enteredAmountValid ||
         selectedDate == null ||
         selectedCategory == null) {
-      showDialog(
-          context: context,
-          builder: (ctx) {
-            return AlertDialog(
-              title: Text("Invalid data"),
-              content: Text("Please enter valid data"),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text("OK"))
-              ],
-            );
-          });
+      if (Platform.isIOS) {
+        showCupertinoDialog(
+            context: context,
+            builder: (ctx) {
+              return AlertDialog(
+                title: Text("Invalid data"),
+                content: Text("Please enter valid data"),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text("OK"))
+                ],
+              );
+            });
+      } else {
+        showDialog(
+            context: context,
+            builder: (ctx) {
+              return AlertDialog(
+                title: Text("Invalid data"),
+                content: Text("Please enter valid data"),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text("OK"))
+                ],
+              );
+            });
+      }
       return;
     }
     widget.addExpense(expense.Expense(
