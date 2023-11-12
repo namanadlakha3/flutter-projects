@@ -1,6 +1,7 @@
 import 'package:expense_tracker/models/expense.dart';
 import 'package:expense_tracker/widgets/expenses.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 var kColorScheme = ColorScheme.fromSeed(
   seedColor: Color.fromARGB(255, 77, 6, 90),
@@ -8,9 +9,17 @@ var kColorScheme = ColorScheme.fromSeed(
 
 var kDarkColorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
-  seedColor: Color.fromARGB(255, 5, 99, 125),
+  seedColor: const Color.fromARGB(255, 5, 99, 125),
 );
 void main() {
+  // To lock screen
+
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations(
+  //   [
+  //     DeviceOrientation.portraitUp,
+  //   ],
+  // ).then((value) {
   runApp(
     MaterialApp(
       //themeMode: ThemeMode.system,
@@ -58,4 +67,5 @@ void main() {
       home: ExpensesScreen(),
     ),
   );
+  //});
 }

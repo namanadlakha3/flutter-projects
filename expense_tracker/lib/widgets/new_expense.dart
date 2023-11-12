@@ -82,76 +82,118 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
-        child: Column(
-          children: [
-            TextField(
-              controller: enteredTitle,
-              maxLength: 50,
-              decoration: const InputDecoration(
-                labelText: 'Title',
-              ),
-            ),
-            Row(children: [
-              Expanded(
-                child: TextField(
-                  controller: enteredAmount,
-                  maxLength: 50,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    prefixText: '\$',
-                    labelText: 'Entered Amount',
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+    final keyBoardSpace = MediaQuery.of(context).viewInsets.bottom;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double width = constraints.maxWidth;
+        return SizedBox(
+          height: double.infinity,
+          child: SingleChildScrollView(
+            child: Padding(
+                padding: EdgeInsets.fromLTRB(16, 48, 16, keyBoardSpace + 16),
+                child: Column(
                   children: [
-                    Text(selectedDate == null
-                        ? "Select date"
-                        : formatter.format(selectedDate!)),
-                    IconButton(
-                      onPressed: datePicker,
-                      icon: const Icon(Icons.calendar_month),
+                    if (width > 600)
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: enteredTitle,
+                              maxLength: 50,
+                              decoration: const InputDecoration(
+                                labelText: 'Title',
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 24,
+                          ),
+                          Expanded(
+                            child: TextField(
+                              controller: enteredAmount,
+                              maxLength: 50,
+                              keyboardType: TextInputType.number,
+                              decoration: const InputDecoration(
+                                prefixText: '\$',
+                                labelText: 'Entered Amount',
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    else
+                      TextField(
+                        controller: enteredTitle,
+                        maxLength: 50,
+                        decoration: const InputDecoration(
+                          labelText: 'Title',
+                        ),
+                      ),
+                    Row(children: [
+                      Expanded(
+                        child: TextField(
+                          controller: enteredAmount,
+                          maxLength: 50,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            prefixText: '\$',
+                            labelText: 'Entered Amount',
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(selectedDate == null
+                                ? "Select date"
+                                : formatter.format(selectedDate!)),
+                            IconButton(
+                              onPressed: datePicker,
+                              icon: const Icon(Icons.calendar_month),
+                            )
+                          ],
+                        ),
+                      ),
+                    ]),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      children: [
+                        DropdownButton(
+                          value: selectedCategory,
+                          items: expense.Category.values.map((e) {
+                            return DropdownMenuItem(
+                              value: e,
+                              child: Text(
+                                e.name.toUpperCase(),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: onSelectCategory,
+                        ),
+                        Spacer(),
+                        ElevatedButton(
+                          onPressed: submitExpenseData,
+                          child: const Text("Save Expense"),
+                        ),
+                        TextButton(
+                          onPressed: onCancel,
+                          child: const Text("Cancel"),
+                        )
+                      ],
                     )
                   ],
-                ),
-              ),
-            ]),
-            SizedBox(
-              height: 16,
-            ),
-            Row(
-              children: [
-                DropdownButton(
-                  value: selectedCategory,
-                  items: expense.Category.values.map((e) {
-                    return DropdownMenuItem(
-                      value: e,
-                      child: Text(
-                        e.name.toUpperCase(),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: onSelectCategory,
-                ),
-                Spacer(),
-                ElevatedButton(
-                  onPressed: submitExpenseData,
-                  child: const Text("Save Expense"),
-                ),
-                TextButton(
-                  onPressed: onCancel,
-                  child: const Text("Cancel"),
-                )
-              ],
-            )
-          ],
-        ));
+                )),
+          ),
+        );
+      },
+    );
   }
 }

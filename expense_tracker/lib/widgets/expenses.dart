@@ -59,6 +59,8 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
 
   void openAddExpenseOverlay() {
     showModalBottomSheet(
+      // Safely take care of camera notch
+      useSafeArea: true,
       isScrollControlled: true,
       context: context,
       builder: (ctx) {
@@ -69,6 +71,9 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    final isLandscape = width > height;
     Widget mainContent = Center(
       child: Text("No expenses found."),
     );
@@ -87,15 +92,27 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
           ),
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Chart(
-            expenses: _expenses,
-          ),
-          Expanded(child: mainContent),
-        ],
-      ),
+      body: isLandscape
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Chart(
+                    expenses: _expenses,
+                  ),
+                ),
+                Expanded(child: mainContent),
+              ],
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Chart(
+                  expenses: _expenses,
+                ),
+                Expanded(child: mainContent),
+              ],
+            ),
     );
   }
 }
