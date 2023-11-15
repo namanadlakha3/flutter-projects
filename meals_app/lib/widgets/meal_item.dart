@@ -5,8 +5,9 @@ import 'package:meals_app/widgets/meal_item_trait.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class MealItem extends StatelessWidget {
-  MealItem({super.key, required this.meal});
+  MealItem({super.key, required this.meal, required this.toggleFavorite});
   final Meal meal;
+  void Function(String) toggleFavorite;
 
   String get complexityText {
     return meal.complexity.name[0].toUpperCase() +
@@ -23,6 +24,7 @@ class MealItem extends StatelessWidget {
       MaterialPageRoute(builder: (context) {
         return MealDeatilsScreen(
           meal: meal,
+          toggleFavorite: toggleFavorite,
         );
       }),
     );

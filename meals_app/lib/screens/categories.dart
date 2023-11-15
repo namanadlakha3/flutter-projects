@@ -5,12 +5,15 @@ import '../data/dummy_data.dart';
 import '../widgets/category_grid_item.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  CategoriesScreen({super.key});
+  CategoriesScreen({super.key, required this.toggleFavorite});
+
+  void Function(String) toggleFavorite;
 
   void selectCategory(BuildContext context, String id, String title) {
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) {
         return MealScreen(
+          toggleFavorite: toggleFavorite,
           title: title,
           meals:
               dummyMeals.where((meal) => meal.categories.contains(id)).toList(),
@@ -21,24 +24,18 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pick your category'),
+    return GridView(
+      padding: const EdgeInsets.all(25),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 3 / 2,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
       ),
-      body: GridView(
-        padding: const EdgeInsets.all(25),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 3 / 2,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
-        ),
-        children: [
-          for (final category in availableCategories)
-            CategoryGridItem(
-                category: category, selectCategory: selectCategory),
-        ],
-      ),
+      children: [
+        for (final category in availableCategories)
+          CategoryGridItem(category: category, selectCategory: selectCategory),
+      ],
     );
   }
 }
