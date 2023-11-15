@@ -41,9 +41,13 @@ class MealDeatilsScreen extends StatelessWidget {
           ),
           SizedBox(height: 16),
           for (final ingredient in meal.ingredients)
-            Text(ingredient,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground)),
+            Text(
+              ingredient,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(color: Theme.of(context).colorScheme.onBackground),
+            ),
           SizedBox(height: 24),
           Text(
             "Steps",
